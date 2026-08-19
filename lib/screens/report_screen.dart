@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gg_entregas/repositories/rota_repository.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -11,7 +12,6 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBarWidget(),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(12),
@@ -21,7 +21,11 @@ class _ReportScreenState extends State<ReportScreen> {
               child: ListTile(
                 title: Text("Extrato de Lançamentos"),
                 trailing: Icon(Icons.arrow_right),
-                onTap: () {},
+                onTap: () async {
+                  final rota = await RotaRepository().getAll();
+
+                  debugPrint('Rota: ${rota.toJson()}');
+                },
               ),
             ),
           ],
