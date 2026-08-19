@@ -14,9 +14,6 @@ class _LoginScreensState extends State<LoginScreens> {
     return Scaffold(
       body: Stack(
         children: [
-          // =========================
-          // FUNDO
-          // =========================
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
@@ -34,9 +31,6 @@ class _LoginScreensState extends State<LoginScreens> {
             ),
           ),
 
-          // =========================
-          // MANCHA AZUL
-          // =========================
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -54,9 +48,6 @@ class _LoginScreensState extends State<LoginScreens> {
             ),
           ),
 
-          // =========================
-          // MANCHA AMARELA
-          // =========================
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -74,9 +65,6 @@ class _LoginScreensState extends State<LoginScreens> {
             ),
           ),
 
-          // =========================
-          // ESCURECIMENTO INFERIOR
-          // =========================
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -94,9 +82,6 @@ class _LoginScreensState extends State<LoginScreens> {
             ),
           ),
 
-          // =========================
-          // CONTEÚDO
-          // =========================
           SafeArea(
             child: Column(
               children: [
