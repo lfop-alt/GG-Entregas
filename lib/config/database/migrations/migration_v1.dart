@@ -8,7 +8,7 @@ class MigrationV1 implements Migration {
   @override
   Future<void> up(Database db) async {
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS entregas (
+      CREATE TABLE IF NOT EXISTS rotas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         valor REAL NOT NULL,
         local TEXT NOT NULL,

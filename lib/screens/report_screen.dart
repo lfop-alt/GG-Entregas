@@ -12,7 +12,6 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBarWidget(),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(12),
