@@ -1,5 +1,6 @@
 # GG Entregas
 
+<img width="423" height="881" alt="home" src="https://github.com/user-attachments/assets/517ac04b-08b5-4461-b5c6-f0229b761b14" />
 
 
 Aplicativo mobile desenvolvido em Flutter para auxiliar entregadores de encomendas de plataformas como **Shopee** e **Mercado Livre** no controle e organização financeira das suas entregas.
