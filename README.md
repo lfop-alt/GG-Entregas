@@ -1,17 +1,31 @@
-# gg_entregas
+# GG Entregas
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+Aplicativo mobile desenvolvido em Flutter para auxiliar entregadores de encomendas de plataformas como **Shopee** e **Mercado Livre** no controle e organização financeira das suas entregas.
 
-A few resources to get you started if this is your first Flutter project:
+A proposta é permitir que o entregador tenha uma visão mais clara dos seus ganhos e custos relacionados às entregas, ajudando na organização da rotina e na tomada de decisões financeiras.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Status do Projeto
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+O projeto encontra-se em **fase de desenvolvimento**. Novas funcionalidades, melhorias de UX/UI e integrações estão sendo implementadas continuamente.
+
+---
+
+## Tecnologias e Ferramentas
+
+O aplicativo foi construído utilizando as práticas do ecossistema Flutter:
+
+- **Flutter** — Framework UI multiplataforma
+- **Dart** — Linguagem de programação principal
+- **Riverpod** — Gerenciamento de estado reativo e injeção de dependências
+- **Go Router** — Roteamento declarativo e navegação
+- **SQLite** — Armazenamento local de dados para persistência offline
+
+---
+
+## Plataformas Suportadas
+
+- Android
+- iOS
+
