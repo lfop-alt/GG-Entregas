@@ -19,7 +19,14 @@ class MainScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromARGB(255, 7, 53, 65),
         label: Text('Novo Lançamento', style: TextStyle(color: Colors.white)),
-        onPressed: () {},
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: child,
+          ),
+        ),
         icon: Icon(Icons.add, color: Colors.white),
       ),
     );
