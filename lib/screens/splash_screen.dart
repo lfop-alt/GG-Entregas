@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,31 +11,35 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void go(String route) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.go(route);
-    });
+  @override
+  void initState() {
+    super.initState();
+
+    print('🔥 SPLASH INIT');
+
+    checkUser();
   }
 
   Future<void> checkUser() async {
     final prefs = await SharedPreferences.getInstance();
-    final String name = prefs.getString('name') ?? 'Usuário';
 
-    if (name.isNotEmpty && name != null) {
-      go('/home');
+    final name = prefs.getString('name');
+
+    if (!mounted) {
+      return;
+    }
+
+    if (name != null && name.trim().isNotEmpty) {
+      context.go('/home');
+      FlutterNativeSplash.remove();
     } else {
-      go('/login');
+      context.go('/login');
+      FlutterNativeSplash.remove();
     }
   }
 
   @override
-  initState() {
-    super.initState();
-    checkUser();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return const CircularProgressIndicator(color: Colors.blue);
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
