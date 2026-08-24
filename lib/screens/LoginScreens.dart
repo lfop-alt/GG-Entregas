@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreens extends StatefulWidget {
   const LoginScreens({super.key});
@@ -9,6 +10,12 @@ class LoginScreens extends StatefulWidget {
 }
 
 class _LoginScreensState extends State<LoginScreens> {
+  TextEditingController nameController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +62,9 @@ class _LoginScreensState extends State<LoginScreens> {
                   center: const Alignment(0.8, -0.9),
                   radius: 0.9,
                   colors: [
-                    const Color(0xFFFFB000).withOpacity(1.0),
-                    const Color(0xFFFFB000).withOpacity(0.75),
-                    const Color(0xFFFFB000).withOpacity(0.0),
+                    const Color(0xFFFFB000).withValues(alpha: 1.0),
+                    const Color(0xFFFFB000).withValues(alpha: 0.75),
+                    const Color(0xFFFFB000).withValues(alpha: 0.0),
                   ],
                   stops: const [0.0, 0.45, 1.0],
                 ),
@@ -74,7 +81,7 @@ class _LoginScreensState extends State<LoginScreens> {
                   colors: [
                     Colors.transparent,
                     Colors.transparent,
-                    const Color(0xFF020817).withOpacity(0.95),
+                    const Color(0xFF020817).withValues(alpha: 0.95),
                   ],
                   stops: const [0.45, 0.65, 1.0],
                 ),
@@ -101,9 +108,10 @@ class _LoginScreensState extends State<LoginScreens> {
                       // USUÁRIO
                       TextField(
                         style: const TextStyle(color: Colors.white),
+                        controller: nameController,
                         decoration: InputDecoration(
-                          labelText: 'Usuário',
-                          hintText: 'Digite seu usuário',
+                          labelText: 'Nome',
+                          hintText: 'Digite seu nome',
 
                           hintStyle: const TextStyle(color: Colors.white70),
 
@@ -130,48 +138,38 @@ class _LoginScreensState extends State<LoginScreens> {
                         keyboardType: TextInputType.text,
                       ),
 
-                      const SizedBox(height: 20),
-
                       // SENHA
-                      TextField(
-                        obscureText: true,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: 'Senha',
-                          hintText: 'Digite sua senha',
-
-                          hintStyle: const TextStyle(color: Colors.white70),
-
-                          labelStyle: const TextStyle(color: Colors.white),
-
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.white),
-                          ),
-
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.white),
-                          ),
-
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                      ),
-
                       const SizedBox(height: 50),
 
                       // BOTÃO
                       SizedBox(
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {
-                            context.go('/home');
+                          onPressed: () async {
+                            if (nameController.text.trim().isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Por favor, digite seu nome.'),
+                                ),
+                              );
+                              return;
+                            }
+                            if (nameController.text.trim().length < 3) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'O nome deve ter pelo menos 3 caracteres.',
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
+
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.setString('name', nameController.text);
+                            if (context.mounted) {
+                              context.go('/home');
+                            }
                           },
                           child: const Text('Entrar'),
                         ),
@@ -187,7 +185,7 @@ class _LoginScreensState extends State<LoginScreens> {
                       Colors.white,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {},
                   child: const Text('Esqueci minha senha'),
                 ),
               ],

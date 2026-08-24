@@ -3,12 +3,14 @@ import 'package:gg_entregas/screens/home_screen.dart';
 import 'package:gg_entregas/screens/main_screen.dart';
 import 'package:gg_entregas/screens/report_screen.dart';
 import 'package:gg_entregas/screens/setting_screen.dart';
+import 'package:gg_entregas/screens/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter _router = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(path: '/', builder: (context, state) => const LoginScreens()),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreens()),
+    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
 
     // GoRoute(path: '/home', builder: (context, state) => const HomeScreens()),
     ShellRoute(
