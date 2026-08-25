@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gg_entregas/providers/app_providers.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreens extends StatefulWidget {
+class LoginScreens extends ConsumerStatefulWidget {
   const LoginScreens({super.key});
 
   @override
-  State<LoginScreens> createState() => _LoginScreensState();
+  ConsumerState<LoginScreens> createState() => _LoginScreensState();
 }
 
-class _LoginScreensState extends State<LoginScreens> {
+class _LoginScreensState extends ConsumerState<LoginScreens> {
   TextEditingController nameController = TextEditingController();
   @override
   void initState() {
@@ -45,9 +46,9 @@ class _LoginScreensState extends State<LoginScreens> {
                   center: const Alignment(-0.8, 0.05),
                   radius: 1.0,
                   colors: [
-                    const Color(0xFF006BFF).withOpacity(0.95),
-                    const Color(0xFF006BFF).withOpacity(0.65),
-                    const Color(0xFF006BFF).withOpacity(0.0),
+                    const Color(0xFF006BFF).withValues(alpha: 0.95),
+                    const Color(0xFF006BFF).withValues(alpha: 0.65),
+                    const Color(0xFF006BFF).withValues(alpha: 0.0),
                   ],
                   stops: const [0.0, 0.45, 1.0],
                 ),
@@ -165,8 +166,9 @@ class _LoginScreensState extends State<LoginScreens> {
                               return;
                             }
 
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.setString('name', nameController.text);
+                            ref
+                                .read(nameProvider.notifier)
+                                .setName(nameController.text);
                             if (context.mounted) {
                               context.go('/home');
                             }

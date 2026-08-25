@@ -11,19 +11,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final SharedPreferencesAsync _prefs = SharedPreferencesAsync();
   @override
   void initState() {
     super.initState();
-
-    print('🔥 SPLASH INIT');
 
     checkUser();
   }
 
   Future<void> checkUser() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final name = prefs.getString('name');
+    final name = await _prefs.getString('name');
 
     if (!mounted) {
       return;

@@ -1,41 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gg_entregas/providers/app_providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AppBarHome extends StatefulWidget implements PreferredSizeWidget {
+class AppBarHome extends ConsumerStatefulWidget implements PreferredSizeWidget {
   const AppBarHome({super.key});
 
   @override
-  State<AppBarHome> createState() => _AppBarHomeState();
+  ConsumerState<AppBarHome> createState() => _AppBarHomeState();
 
   @override
   // TODO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(130);
 }
 
-class _AppBarHomeState extends State<AppBarHome> {
-  String name = 'Usuário';
+class _AppBarHomeState extends ConsumerState<AppBarHome> {
+  // String name = 'Usuário';
 
-  @override
-  initState() {
-    super.initState();
-    loadName();
-  }
+  // @override
+  // initState() {
+  //   super.initState();
+  //   loadName();
+  // }
 
-  Future<void> loadName() async {
-    final prefs = await SharedPreferences.getInstance();
+  // Future<void> loadName() async {
+  //   name = ref.watch( nameProvider);
 
-    final savedName = prefs.getString('name');
+  //   if (!mounted) return;
 
-    if (!mounted) return;
-
-    setState(() {
-      name = savedName ?? 'Usuário';
-    });
-  }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final name = ref.watch(nameProvider);
     return AppBar(
       title: Text('Olá, $name!'),
       backgroundColor: Colors.transparent,
