@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gg_entregas/providers/rota/rota_provider.dart';
+import 'package:intl/intl.dart';
 
-class HomeScreens extends StatefulWidget {
+class HomeScreens extends ConsumerStatefulWidget {
   const HomeScreens({super.key});
 
   @override
-  State<HomeScreens> createState() => _HomeScreensState();
+  ConsumerState<HomeScreens> createState() => _HomeScreensState();
 }
 
-class _HomeScreensState extends State<HomeScreens> {
+class _HomeScreensState extends ConsumerState<HomeScreens> {
   @override
   Widget build(BuildContext context) {
+    final rotas = ref.watch(rotaProvider);
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -22,10 +27,25 @@ class _HomeScreensState extends State<HomeScreens> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
 
-                subtitle: const Text(
-                  'R\$ 2.476,00',
-                  style: TextStyle(fontSize: 16),
+                subtitle: rotas.when(
+                  data: (data) {
+                    final totalValor = data.fold<double>(
+                      0,
+                      (sum, rota) => sum + rota.valor,
+                    );
+                    return Text(
+                      "R\$ $totalValor",
+                      style: const TextStyle(fontSize: 16),
+                    );
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                  error: (error, stackTrace) {
+                    return const Text('Erro ao carregar dados');
+                  },
                 ),
+
                 trailing: const Icon(Icons.arrow_right, size: 30),
                 onTap: () {
                   // Handle saldo liquido tap
@@ -46,12 +66,26 @@ class _HomeScreensState extends State<HomeScreens> {
                         leading: const Icon(Icons.local_gas_station),
                         title: const Text('Combustível'),
                       ),
-                      Text(
-                        "R\$ 1.000,00",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      rotas.when(
+                        data: (data) {
+                          final totalCombustivel = data.fold<double>(
+                            0,
+                            (sum, rota) => sum + rota.combustivel,
+                          );
+                          return Text(
+                            "R\$ $totalCombustivel",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
+                        loading: () {
+                          return CircularProgressIndicator();
+                        },
+                        error: (error, stackTrace) {
+                          return Text('Erro ao carregar dados');
+                        },
                       ),
                     ],
                   ),
@@ -64,12 +98,26 @@ class _HomeScreensState extends State<HomeScreens> {
                         leading: const Icon(Icons.speed),
                         title: const Text('Km Rodados'),
                       ),
-                      Text(
-                        "180 km",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      rotas.when(
+                        data: (data) {
+                          final totalKm = data.fold<double>(
+                            0,
+                            (sum, rota) => sum + rota.kilometragem,
+                          );
+                          return Text(
+                            "$totalKm km",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
+                        loading: () {
+                          return CircularProgressIndicator();
+                        },
+                        error: (error, stackTrace) {
+                          return Text('Erro ao carregar dados');
+                        },
                       ),
                     ],
                   ),
@@ -96,41 +144,41 @@ class _HomeScreensState extends State<HomeScreens> {
                         // Handle settings tap
                       },
                     ),
-                    Expanded(
-                      child: ListView(
-                        children: [
-                          ListTile(
-                            title: Text('Riacho Grande'),
-                            subtitle: Text('14/08/2026'),
-                            leading: Text('51km'),
-                            trailing: Text('R\$290,00'),
-                          ),
-                          ListTile(
-                            title: Text('Eldorado'),
-                            subtitle: Text('13/08/2026'),
-                            leading: Text('11km'),
-                            trailing: Text('R\$290,00'),
-                          ),
-                          ListTile(
-                            title: Text('Areião'),
-                            subtitle: Text('11/08/2026'),
-                            leading: Text('33km'),
-                            trailing: Text('R\$260,00'),
-                          ),
-                          ListTile(
-                            title: Text('Riacho Grande'),
-                            subtitle: Text('15/08/2026'),
-                            leading: Text('47km'),
-                            trailing: Text('R\$271,00'),
-                          ),
-                          ListTile(
-                            title: Text('Inamar'),
-                            subtitle: Text('16/08/2026'),
-                            leading: Text('27km'),
-                            trailing: Text('R\$271,00'),
-                          ),
-                        ],
-                      ),
+                    rotas.when(
+                      data: (data) {
+                        if (data.isEmpty) {
+                          return const Center(
+                            child: Text('Nenhuma rota encontrada'),
+                          );
+                        } else {
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: data.length,
+                              itemBuilder: (context, index) {
+                                final rota = data[index];
+                                return ListTile(
+                                  title: Text(rota.local),
+                                  subtitle: Text(
+                                    DateFormat(
+                                      'dd/MM/yyyy',
+                                    ).format(rota.dataEntrega),
+                                  ),
+                                  leading: Text('${rota.kilometragem} km'),
+                                  trailing: Text('R\$${rota.valor}'),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      },
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                      error: (error, stackTrace) {
+                        return const Center(
+                          child: Text('Erro ao carregar dados'),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -138,7 +186,6 @@ class _HomeScreensState extends State<HomeScreens> {
             ),
           ),
         ],
-
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
       ),

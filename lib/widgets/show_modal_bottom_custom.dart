@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gg_entregas/models/rotas_model.dart';
-import 'package:gg_entregas/repositories/rota_repository.dart';
+import 'package:gg_entregas/providers/rota/rota_provider.dart';
 import 'package:intl/intl.dart';
 
-void showModalBottomSheetCustom(BuildContext context) {
+void showModalBottomSheetCustom(BuildContext context, WidgetRef ref) {
   final valorController = TextEditingController();
   final kmController = TextEditingController();
   final localController = TextEditingController();
   final dataController = TextEditingController();
   final combustivelController = TextEditingController();
   final observacaoController = TextEditingController();
-
-  RotaRepository rotaRepository = RotaRepository();
 
   showModalBottomSheet(
     context: context,
@@ -105,7 +104,6 @@ void showModalBottomSheetCustom(BuildContext context) {
               fixedSize: WidgetStatePropertyAll(Size(200, 50)),
             ),
             onPressed: () async {
-              print('Estou aqui');
               final valor = valorController.text;
               final km = kmController.text;
               final local = localController.text;
@@ -115,18 +113,21 @@ void showModalBottomSheetCustom(BuildContext context) {
 
               final dateFormated = DateFormat('dd/MM/yyyy').parse(data);
 
-              await rotaRepository.insert(
-                Rota(
-                  valor: double.tryParse(valor) ?? 0.0,
-                  local: local,
-                  combustivel: double.tryParse(combustivel) ?? 0.0,
-                  observacao: observacao,
-                  dataEntrega: dateFormated,
-                  kilometragem: double.tryParse(km) ?? 0.0,
-                  createdAt: DateTime.now(),
-                  updatedAt: DateTime.now(),
-                ),
-              );
+              ref
+                  .read(rotaProvider.notifier)
+                  .insertRota(
+                    Rota(
+                      valor: double.tryParse(valor) ?? 0.0,
+                      local: local,
+                      combustivel: double.tryParse(combustivel) ?? 0.0,
+                      observacao: observacao,
+                      dataEntrega: dateFormated,
+                      kilometragem: double.tryParse(km) ?? 0.0,
+                      createdAt: DateTime.now(),
+                      updatedAt: DateTime.now(),
+                    ),
+                  );
+              ref.invalidate(rotaProvider);
 
               Navigator.pop(context);
             },

@@ -23,8 +23,6 @@ class _ReportScreenState extends State<ReportScreen> {
                 trailing: Icon(Icons.arrow_right),
                 onTap: () async {
                   final rota = await RotaRepository().getAll();
-
-                  debugPrint('Rota: ${rota.toJson()}');
                 },
               ),
             ),

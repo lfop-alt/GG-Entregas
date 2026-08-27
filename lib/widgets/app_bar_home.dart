@@ -11,26 +11,10 @@ class AppBarHome extends ConsumerStatefulWidget implements PreferredSizeWidget {
   ConsumerState<AppBarHome> createState() => _AppBarHomeState();
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(130);
 }
 
 class _AppBarHomeState extends ConsumerState<AppBarHome> {
-  // String name = 'Usuário';
-
-  // @override
-  // initState() {
-  //   super.initState();
-  //   loadName();
-  // }
-
-  // Future<void> loadName() async {
-  //   name = ref.watch( nameProvider);
-
-  //   if (!mounted) return;
-
-  // }
-
   @override
   Widget build(BuildContext context) {
     final name = ref.watch(nameProvider);
